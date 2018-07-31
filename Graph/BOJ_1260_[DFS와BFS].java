@@ -8,113 +8,196 @@ import java.util.LinkedList;
 import java.util.Queue;
 import java.util.StringTokenizer;
 
-public class BOJ_1260 {
-	static Boolean[] visit = new Boolean[1001];
-	static Boolean[] bfsB = new Boolean[1001];
-	public static void main(String[] args) throws IOException {
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		StringTokenizer st = new StringTokenizer(br.readLine());
+public class Main {
+	static int[][] graph = new int[1001][1001];
+	static int[] visit = new int[1001];
+	static String str = "";
+	
+	public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
 		
-		int n = Integer.parseInt(st.nextToken());	// 점의 개수 N
-		int m = Integer.parseInt(st.nextToken()); // 간선의 개수 M
-		int v = Integer.parseInt(st.nextToken()); // 탐색을 시작할 번호 V
-
-		// 한 간선이 여러 번 주어질 수도 있음
-		
-		// 4 5 1
-		// 1 2
-		// 1 3
-		// 1 4
-		// 2 4
-		// 3 4
-		ArrayList<Point> list = new ArrayList<Point>();
-		Queue<Point> queue = new LinkedList();
-		
-		//Arrays.fill(bfsB, false);
+		int n = sc.nextInt();
+		int m = sc.nextInt();
+		int v = sc.nextInt();
 		
 		while(m-- > 0) {
-			// 중복제거 해줘야함
-			StringTokenizer st1 = new StringTokenizer(br.readLine());
-			int x = Integer.parseInt(st1.nextToken());
-			int y = Integer.parseInt(st1.nextToken());
+			int x = sc.nextInt();
+			int y = sc.nextInt();
 			
-			Point p = new Point();
-			p.x = x;
-			p.y = y;
-			list.add(p);
-			queue.add(p);
+			graph[x][y] = graph[y][x] = 1;
 		}
-		visit[v] = true;
-		bfsB[v] = true;
-//		6 8 1
-//		1 6 
-//		6 2 
-//		2 4 
-//		4 3 
-//		5 6 
-//		5 1 
-//		3 5 
-//		2 3
-//		DFS : 1 6 2 4 3 5 
-//		BFS : 1 6 2 4 3 5
-//		
-//		정답
-		// 1 -> 5 -> 3 -> 2 -> 4 -> 6
-//		DFS : 1 5 3 2 4 6
+		visit[v] = 1;
+		System.out.println(v + dfs(v));
 		
-		// 1 -> 5 -> 6 -> 3 -> 2 -> 4
-//		BPS : 1 5 6 3 2 4 
-//		System.out.println("DFS : " + v + " " + dfs(list, v));
-//		System.out.println("BFS : " + v + bfs(queue, v));
+		Arrays.fill(visit, 0);
+		visit[v] = 1;
+		bfs(v);
 	}
 	
-	static class Point {
+	static String dfs(int v) {
+		for (int i = 1; i < graph[v].length; i++) {
+			if (graph[v][i] == 1 && visit[i] != 1) {
+				str += " " + i;
+				visit[i] = 1;
+				dfs(i);
+			}
+		}
+		return str;
+	}
+	
+	static void bfs(int v) {
+		Queue<Integer> queue = new LinkedList<Integer>();
+		queue.add(v);
+		System.out.print(v);
+		while(!queue.isEmpty()) {
+			int poll = queue.poll();
+			for (int i = 1; i < graph[poll].length; i++) {
+				if (graph[poll][i] == 1 && visit[i] != 1) {
+					queue.add(i);
+					visit[i] = 1;
+					System.out.print(" " + i);
+				}
+			}
+		}
+	}
+}
+
+// 답은 맞으나 속도가 안 나옴
+// 원인 : 전제 자체가 틀렸었음 -> class Point를 통하면 반드시 정렬을 위한 sort를 하여 시간을 잡아먹으나 배열로 했으면 처음부터 정렬이 되어있는 상태였기 때문에 정렬을 위한 시간을 아낄수 있었음
+public class Main {
+	static int[][] graph = new int[1001][1001];
+	static int[] visit = new int[1001];
+	static Boolean[][] visitDfs = new Boolean[1001][1001];
+	static Boolean[][] visitBfs = new Boolean[1001][1001];
+	static LinkedList<Point> list = new LinkedList<Point>();
+	static ArrayList<Integer> p = new ArrayList<Integer>();
+	
+	static class Point implements Comparable<Point>{
 		int x;
 		int y;
+		Point(int x, int y) {
+			this.x = x;
+			this.y = y;
+		}
+		@Override
+		public int compareTo(Point p) {
+			if (this.x < p.x) {
+				return -1;
+			} else if (this.x > p.x) {
+				return 1;
+			} else if (this.y < p.y) {
+				return -1;
+			} else if (this.y > p.y) {
+				return 1;
+			}
+			return 0;
+		}
 	}
 	
-	private static String bfs(Queue<Point> _queue, int _v) {		
-		String str = "";		
+	public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
 		
-		while(!_queue.isEmpty()) {
-			Point p = _queue.poll();
-			// v나 next 둘중 하나가 true인지 먼저 검사
-			if (bfsB[p.x] == null && bfsB[p.y] == null) {
-				// 실패
-			}
+		int n = sc.nextInt();
+		int m = sc.nextInt();
+		int v = sc.nextInt();
+		
+		while(m-- > 0) {
+			int x = sc.nextInt();
+			int y = sc.nextInt();
 			
-			if (bfsB[p.x] == null) {
-				bfsB[p.x] = true;
-				str += " " + p.x;
-			}
-			
-			if (bfsB[p.y] == null) {
-				bfsB[p.y] = true;
-				str += " " + p.y;
+			if (x > y) {
+				Point p = new Point(y, x);
+				list.add(p);
+			} else {
+				Point p = new Point(x, y);
+				list.add(p);
 			}
 		}
-		return str;
+		
+		Collections.sort(list);
+		String str = "";
+		
+		dfs(v);
+		for (int i = 0; i < p.size(); i++) {
+			if (i == p.size() - 1) {
+				str += p.get(i);				
+			} else {
+				str += p.get(i) + " ";
+			}
+		}
+		System.out.println(str);
+		
+		str = "";
+		p.clear();
+		
+		bfs(v);
+		for (int i = 0; i < p.size(); i++) {
+			if (i == p.size() - 1) {
+				str += p.get(i);				
+			} else {
+				str += p.get(i) + " ";
+			}
+		}
+		System.out.println(str);
 	}
 	
-
-//https://www.acmicpc.net/board/view/24356
-
-	
-	// Stack, 재귀호출, FILO
-	private static String dfs(ArrayList<Point> _list, int _v) {
-		String str = "";
-		for (int i = 0; i < _list.size(); i++) {	
-			if (_list.get(i).x == _v && visit[_list.get(i).y] == null) { // 정방향 검색
-				visit[_list.get(i).y] = true;
-				str += _list.get(i).y + " " + dfs(_list, _list.get(i).y);
-				//return str;
+	static void dfs(int v) {
+		int x, y;
+		
+		for (int i = 0; i < list.size(); i++) {
+			x = list.get(i).x;
+			y = list.get(i).y;
+			
+			if (x == v && visitDfs[x][y] == null) {
+				visitDfs[x][y] = true;
+				if (p.indexOf(v) == -1) {
+					p.add(v);					
+				}
+				dfs(y);
 			}
-			else if (_list.get(i).y == _v && visit[_list.get(i).x] == null) { // 역방향 검색
-				visit[_list.get(i).x] = true;
-				str += _list.get(i).x + " " + dfs(_list, _list.get(i).x);
-				//return str;
+			
+			if (y == v && visitDfs[x][y] == null) {
+				visitDfs[x][y] = true;
+				if (p.indexOf(v) == -1) {
+					p.add(v);					
+				}
+				dfs(x);
 			}
 		}
-		return str;
+	}
+	
+	static void bfs(int v) {
+		Queue<Integer> q = new LinkedList<Integer>();
+		p.add(v);
+		for (Point a : list) {
+			if (a.x == v) {
+				q.add(a.y);
+				p.add(a.y);
+				visitBfs[a.x][a.y] = true;
+			} else if (a.y == v) {
+				q.add(a.x);
+				p.add(a.x);
+				visitBfs[a.x][a.y] = true;
+			}
+		}
+		while(!q.isEmpty()) {
+			int c = q.poll();
+			
+			for (Point a : list) {
+				if (a.x == c && visitBfs[a.x][a.y] == null) {
+					q.add(a.y);
+					visitBfs[a.x][a.y] = true;
+					if (p.indexOf(a.y) == -1 ) {
+						p.add(a.y);
+					}					
+				} else if (a.y == c && visitBfs[a.x][a.y] == null) {
+					q.add(a.x);
+					visitBfs[a.x][a.y] = true;
+					if (p.indexOf(a.x) == -1 ) {
+						p.add(a.x);
+					}
+				}
+			}
+		}
 	}
 }
