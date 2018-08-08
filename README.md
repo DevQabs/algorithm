@@ -90,10 +90,27 @@
         return dist[], prev[]                   // 계산된 거리값과 목적지를 리턴
 
 ---
+### **4. 플로이드-워셜 알고리즘**<br/>
+플로이드-워셜(Floyd-Warshall Algorithm)은 그래프에서 가능한 모든 노드 쌍에 대해 최단 거리를 구하는 알고리즘이다.<br/>
+시간복잡도는 V^3이다. 다익스트라 알고리즘과는 달리 모든 노드 쌍에 대해 최단 거리를 구하고, 음의 가중치를 가지는 그래프에서도 사용이 가능하다는 것이 특징이다.<br/>
 
+플로이드-워셜 알고리즘은 임의의 노드 s에서 e까지 가는 데 걸리는 최단거리를 구하기 위해, s와 e 사이의 노드인 m에 대해 s와 m까지 가는데 걸리는 최단거리와 e와 m까지 가는 데 걸리는 최단거리를 이용한다.<br/>
+
+
+#### 4-2. 의사코드
+for문을 3번 중첩시키면 되기 때문에 구현에 있어 크게 어려운 부분은 없다. (단, for문에서 가운데 노드(m)가 제일 위에 있어야 한다.)
+    
+    void Floyd_Warshall() {
+        for(m=1; m <= N; m++)
+            for (s=1; s <= N; s++)
+                for (e=1; e<=N; e++)
+                    if (d[s][e] > d[s][m] + d[m][e]) d[s][e] = d[s][m] + d[m][e];
+    }
+---
 출처 <br/>
     - BFS / DFS 차이 : https://m.blog.naver.com/PostView.nhn?blogId=premiummina&logNo=220644200194&proxyReferer=https%3A%2F%2Fwww.google.co.kr%2F 
     <br/>
     - 그래프 : https://www.zerocho.com/category/Algorithm/post/584b9033580277001862f16c
     <br/>
     - 다익스트라 알고리즘 : https://namu.wiki/w/%EB%8B%A4%EC%9D%B5%EC%8A%A4%ED%8A%B8%EB%9D%BC%20%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98#fn-4
+    - 플로이드-워셜 알고리즘 : https://namu.wiki/w/%ED%94%8C%EB%A1%9C%EC%9D%B4%EB%93%9C-%EC%9B%8C%EC%85%9C%20%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98
