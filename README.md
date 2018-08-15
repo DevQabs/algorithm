@@ -107,10 +107,62 @@ for문을 3번 중첩시키면 되기 때문에 구현에 있어 크게 어려�
                     if (d[s][e] > d[s][m] + d[m][e]) d[s][e] = d[s][m] + d[m][e];
     }
 ---
+### **5. Union-Find(Disjoint-set)**<br/>
+Union-Find(or Disjoint Set)은 상호 배타적으로 이루어진 집합을 효율적으로 표현하기 위해 만들어진 자료 구조이다.  집합의 원소가 어떠한 집합에 속해있는지 판단하는 `Find 연산`과 자료 구조가 서로 다른 두 개의 집합을 병합하는 `Union 연산`을 지원한다.
+
+#### 5-1. Find 연산
+Find 연산이 수행되면, 재귀적으로 트리를 거슬러 올라가 최상위 노드의 값을 반환한다.
+트리 형태로 구현된 Disjoint Set에서 최상위 노드는 각 집합과 1대 1대응되므로, Find 연산을 통해 각 집합을 알 수 있게 된다.
+<br/>
+
+> Find 연산의 최적화
+>> 매번 트리를 거슬러 올라가는 것을 보완하기 위해, Find 연산에서 방문하는 각 노드마다 결과값을 반환하기전에 List에 해당 원소의 값을 결과값으로 저장한다. (Path compression)
+
+#### 5-2. Union 연산
+
+Union 연산이 수행되면, 먼저 Find 연산을 수행한 후 두 개의 최상위 노드의 부모를 다른 하나의 최상위 노드로 바꾸어 트리를 병합시킨다.
+
+> Union 연산의 최적화
+>> 최악의 상황인 트리의 편중을 해결하기위해, List를 하나 더 만들어서 트리의 대략적인 깊이를 저장한다. 그리하여 Union 연산을 수행할 때 rank(깊이)가 큰 트리에 rank가 작은 트리를 합치도록 변경하면 트리의 깊이를 줄이는 효과가 있다.
+
+### 5-3. 의사코드
+`최적화 전`<br/>
+
+    Function find(index):
+        if list[index] == index:
+            return index
+        else:
+            return find(list[index])
+    
+    Function union(a, b):
+        roota = self.find(a)
+        rootb = self.find(b)
+        list[roota] = list[rootb]
+
+`최적화 후`<br/>
+
+    Funciton find(index):
+        if list[index] == index:
+            return index
+        else:
+            rank[index] = rank[index] + 1
+            return list[index] = find(list[index])  // path Compression
+
+    Function union(a, b):
+        roota = self.find(a)
+        rootb = self.find(b)
+        if(rank[roota] > rank[rootb]) swap(roota, rootb)
+        list[roota] = list[rootb]
+---
 출처 <br/>
     - BFS / DFS 차이 : https://m.blog.naver.com/PostView.nhn?blogId=premiummina&logNo=220644200194&proxyReferer=https%3A%2F%2Fwww.google.co.kr%2F 
     <br/>
     - 그래프 : https://www.zerocho.com/category/Algorithm/post/584b9033580277001862f16c
     <br/>
     - 다익스트라 알고리즘 : https://namu.wiki/w/%EB%8B%A4%EC%9D%B5%EC%8A%A4%ED%8A%B8%EB%9D%BC%20%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98#fn-4
+    <br/>
     - 플로이드-워셜 알고리즘 : https://namu.wiki/w/%ED%94%8C%EB%A1%9C%EC%9D%B4%EB%93%9C-%EC%9B%8C%EC%85%9C%20%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98
+    <br/>
+    - Union-Find 알고리즘 : https://namu.wiki/w/Union%20Find
+    <br/>
+    http://bowbowbow.tistory.com/26
