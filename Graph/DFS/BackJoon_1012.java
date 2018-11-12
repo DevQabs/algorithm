@@ -1,4 +1,4 @@
-package Graph.BreadthFirstSearch;
+package DFS;
 
 import java.util.Scanner;
 
