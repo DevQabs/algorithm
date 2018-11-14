@@ -58,16 +58,7 @@ public class BOJ_1753 {
 			else return -1;
 		}
 	}
-//
-//	6 7
-//	1
-//	1 5 4
-//	1 2 3
-//	2 3 3
-//	3 4 3
-//	4 6 1
-//	5 4 4
-//  4 2  1
+	
 	public static void main(String[] args) throws IOException {
 		Scan sc = new Scan();
 		int V = sc.nextInt();
