@@ -154,6 +154,36 @@ Union 연산이 수행되면, 먼저 Find 연산을 수행한 후 두 개의 최
         if(rank[roota] > rank[rootb]) swap(roota, rootb)
         list[roota] = list[rootb]
 ---
+### **6. 프림 알고리즘(Prim's algorithm)**
+가중치가 있는 모든 꼭지점을 포함하면서 각 변의 비용의 합이 최소가 되는 부분 그래프인 트리, 즉 최소비용생성 그래프를 찾는 알고리즘이다. 변의 개수를 E, 꼭짓점의 개수를 V라고 하면 이 알고리즘은 이진 힙을 이용하여 처리하였을 때는 O(ElogV)의 시간복잡도를 가진다.
+또는 그래프의 변의 개수가 꼭지점의 개수보다 훨씬 많다면 피보나치힙을 이용하면 훨씬 빠르게 계산할 수 있다. 이 방법은 O(E + VlogV)까지 떨어진다.
+프림 알고리즘은 그래프를 유지하면서 완성시켜가는 성질을 가지고 있다.
+또한 프림 알고리즘은 사이클이 존재하는지를 검사하는 부분이 없다.
+
+
+#### 6-1. 작동순서
+1. 그래프에서 하나의 꼭짓점을 선택한다.
+2. 그래프의 모든 변이 들어있는 집합을 만든다.
+3. 모든 꼭짓점이 그래프에 포함되어 있지 않은 동안 그래프에 연결된 변 가운데 두 꼭짓점을 연결하지 않는 가장 가중치가 작은 변을 그래프에 추가한다.
+
+#### 6-2. 의사코드
+    ~~~
+    Prim(G, w, r)
+        ReachSet = {0};
+        UnReachSet = {1, 2, ....., N-1};
+        SpanningTree = {};
+
+        while(UnReachSet is not empty) 
+            Find edge e = (x, y)
+                1. x ∈ ReachSet
+                2. y ∈ UnReachSet
+                3. e has smallest cost
+            SpanningTree = SpanningTree ∪ {e};
+
+            ReachSet = ReachSet ∪ {y};
+            UnReachSet = UnReachSet - {y};
+    ~~~
+---
 출처 <br/>
     - BFS / DFS 차이 : https://m.blog.naver.com/PostView.nhn?blogId=premiummina&logNo=220644200194&proxyReferer=https%3A%2F%2Fwww.google.co.kr%2F 
     <br/>
