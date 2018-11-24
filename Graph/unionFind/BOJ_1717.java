@@ -19,13 +19,6 @@ public class BOJ_1717 {
 			}
 			return Integer.parseInt(st.nextToken());
 		}
-		
-		String nextString() throws IOException {
-			if (st == null || !st.hasMoreTokens()) {
-				st = new StringTokenizer(in.readLine());
-			}
-			return st.nextToken();
-		}
 	}
 	
 	static int find(int index) {

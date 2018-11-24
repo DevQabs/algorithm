@@ -139,6 +139,8 @@ public class BOJ_1922 {
 						// 8 : 4 -> 6					5
 							// 5 
 							// 8 : 5 -> 6				4에서 방문
+			
+			// 쌓이나 우선순위에 의해서 항상 가중치가 낮은 것을 먼저 계산한다.
 			while(!pq.isEmpty()) {
 				Node minNode = pq.poll();
 
