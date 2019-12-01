@@ -49,6 +49,14 @@
    > 단점
    > - 답이 아닌 경로가 매우 깊다면, 그 경로에 깊이 빠질 수 있음.
    
+   DFS의 평균 탐색 노드의 수
+   ~~~Java
+// b : 가지수(breath) , d : 깊이(depth))
+// {(목표 노드가 최좌측에 있는 경우의 탐색 수) + (목표 노드가 최우측에 있는 경우의 탐색의 수)} / 2
+평균탐색 노드의 수 = {(1+d) + (b^(d+1) - 1)(b-1) / 2
+   ~~~
+
+
     예제
     - BaekJoon_1012.java[유기농 배추]
     - BaekJoon_2583.java[영역 구하기]
@@ -205,16 +213,3 @@ Union 연산이 수행되면, 먼저 Find 연산을 수행한 후 두 개의 최
 알고리즘이 종료돼었을 때 숲 F는 하나의 최소 스패닝 트리를 가지게 된다.
 
 크루스컬 알고리즘은 자료구조의 영향을 덜 받으나, 그래프가 뺵뺵한 경우 프림 알고리즘이 성능이 더 좋은 경향을 보인다.
----
-출처 <br/>
-    - BFS / DFS 차이 : https://m.blog.naver.com/PostView.nhn?blogId=premiummina&logNo=220644200194&proxyReferer=https%3A%2F%2Fwww.google.co.kr%2F 
-    <br/>
-    - 그래프 : https://www.zerocho.com/category/Algorithm/post/584b9033580277001862f16c
-    <br/>
-    - 다익스트라 알고리즘 : https://namu.wiki/w/%EB%8B%A4%EC%9D%B5%EC%8A%A4%ED%8A%B8%EB%9D%BC%20%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98#fn-4
-    <br/>
-    - 플로이드-워셜 알고리즘 : https://namu.wiki/w/%ED%94%8C%EB%A1%9C%EC%9D%B4%EB%93%9C-%EC%9B%8C%EC%85%9C%20%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98
-    <br/>
-    - Union-Find 알고리즘 : https://namu.wiki/w/Union%20Find
-    <br/>
-    http://bowbowbow.tistory.com/26
